@@ -29,7 +29,6 @@ namespace Password_Generator
                     if (args[i].Split('=')[0] == "--length" && i == 0)
                     {
                         length = int.Parse(args[i].Split('=')[1]);
-                        Console.WriteLine(length);
                         ch = true;
                     }
 
@@ -72,12 +71,6 @@ namespace Password_Generator
                     password = "";
                     count_letter = 0;
                     count_num = 0;
-
-                    //Проверка
-                    if (min_num + min_letter > length)
-                    {
-                        Console.WriteLine("Error");
-                    }
 
                     for (int i = 0; i < length; i++)
                     {
