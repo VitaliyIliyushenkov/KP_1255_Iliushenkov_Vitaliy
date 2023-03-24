@@ -14,98 +14,159 @@ namespace Password_Generator
         static Random rand = new Random();
         static void Main(string[] args)
         {
+            //Параметры по умолчанию
+            string password = "";
+
+            int length = 16;
+            int min_num = 0;
+            int min_letter = 0;
+            int count_num = 0;
+            int count_letter = 0;
+
+            List<string> type_list = new List<string>() { "numbers", "small_letters" };
+            List<string> type_letter = new List<string>() { "small_letters" };
+
+
+            //Конфигурация
             try
             {
-                //Параметры по умолчанию
-                int length = 16;
-                int min_num = 0;
-                int min_letter = 0;
-                bool ch = false;
-                List<string> type = new List<string>() { "numbers", "small_letters" };
-
-                //Конфигурация
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (args[i].Split('=')[0] == "--length" && i == 0)
+                    if (args[i][0] == '-')
                     {
-                        length = int.Parse(args[i].Split('=')[1]);
-                        ch = true;
-                    }
+                        if (args[i][1] == '-')
+                        {
+                            if (args[i].Split('=')[0] == "--length")
+                            {
+                                length = int.Parse(args[i].Split('=')[1]);
+                            }
 
-                    else if (args[i].Split('=')[0] == "--digits")
-                    {
-                        min_num = int.Parse(args[i].Split('=')[1]);
-                        if (min_num > length && !ch)
-                            length = min_num;
-                        min_letter = 0;
-                    }
-                    else if (args[i].Split('=')[0] == "--letters")
-                    {
-                        min_letter = int.Parse(args[i].Split('=')[1]);
-                        if (min_letter > length && !ch)
-                            length = min_letter;
-                        min_num = 0;
-                    }
-                    else if ("--uppercase".Contains(args[i]))
-                        type.Add("big_letters");
+                            if (args[i].Split('=')[0] == "--digits")
+                            {
+                                min_num = int.Parse(args[i].Split('=')[1]);
+                                min_letter = 0;
+                            }
+                            if (args[i].Split('=')[0] == "--letters")
+                            {
+                                min_letter = int.Parse(args[i].Split('=')[1]);
+                                min_num = 0;
+                            }
+                            if (args[i] == "--uppercase")
+                            {
+                                type_list.Add("big_letters");
+                                type_letter.Add("big_letters");
+                            }
 
-                    else if ("--special".Contains(args[i]))
-                        type.Add("special_symbols");
-                    else if (i == 0)
-                    {
-                        ch = true;
-                        length = int.Parse(args[i]);
+                            if (args[i] == "--special")
+                                type_list.Add("special_symbols");
+                        }
+                        else
+                        {
+                            for (int j = 1; j < args[i].Length; j++)
+                            {
+                                if (args[i][j] == 'u')
+                                {
+                                    type_list.Add("big_letters");
+                                    type_letter.Add("big_letters");
+                                }
+                                else if (args[i][j] == 's') type_list.Add("special_symbols");
+                                else throw new Exception();
+                            }
+                        }
                     }
-                    else
-                    {
-                        i = 0;
-                    }
+                    else length = int.Parse(args[0]);
                 }
-                int count_letter;
-                int count_num;
-                string password;
+                //Проверка
+                if (min_num > length)
+                    length = min_num;
+                if (min_letter > length)
+                    length = min_letter;
+
+                // Console.WriteLine("{0},{1},{2}", length, min_num, min_letter);
 
                 //генерация пароля
-                do
+                for (int i = 0; i < length; i++)
                 {
-                    password = "";
-                    count_letter = 0;
-                    count_num = 0;
-
-                    for (int i = 0; i < length; i++)
+                    int randomtype = rand.Next(type_list.Count);
+                    switch (type_list[randomtype])
                     {
-                        int randomtype = rand.Next(type.Count);
-                        if (type[randomtype] == "numbers")
-                        {
-                            password += GeneratorNumber();
+                        case ("numbers"):
+                            if (count_letter < min_letter && length - i <= min_letter)
+                            {
+                                int randomtypeletter = rand.Next(type_letter.Count);
+                                switch (type_letter[randomtypeletter])
+                                {
+                                    case ("small_letters"):
+                                        password += GeneratorSmallSymbol();
+                                        count_letter++;
+                                        break;
+                                    case ("big_letters"):
+                                        password += GeneratorBigSymbol();
+                                        count_letter++;
+                                        break;
+                                }
+                            }
+                            else password += GeneratorNumber();
                             count_num++;
-                        }
+                            break;
 
-                        if (type[randomtype] == "small_letters")
-                        {
-                            password += GeneratorSmallSymbol();
-                            count_letter++;
-                        }
+                        case ("small_letters"):
+                            if (count_num < min_num && length - i <= min_num)
+                            {
+                                password += GeneratorNumber();
+                                count_num++;
+                            }
+                            else
+                            {
+                                password += GeneratorSmallSymbol();
+                                count_letter++;
+                            }
+                            break;
 
-                        if (type[randomtype] == "big_letters")
-                        {
-                            password += GeneratorBigSymbol();
-                            count_letter++;
-                        }
-
-                        if (type[randomtype] == "special_symbols")
-                            password += GeneratorSpecialSymbol();
+                        case ("big_letters"):
+                            if (count_num < min_num && length - i <= min_num)
+                            {
+                                password += GeneratorNumber();
+                                count_num++;
+                            }
+                            else
+                            {
+                                password += GeneratorBigSymbol();
+                                count_letter++;
+                            }
+                            break;
+                        case ("special_symbols"):
+                            if (count_num < min_num && length - i <= min_num)
+                            {
+                                password += GeneratorNumber();
+                                count_num++;
+                            }
+                            if (count_letter < min_letter && length - i <= min_letter)
+                            {
+                                int randomtypeletter = rand.Next(type_letter.Count);
+                                switch (type_letter[randomtypeletter])
+                                {
+                                    case ("small_letters"):
+                                        password += GeneratorSmallSymbol();
+                                        count_letter++;
+                                        break;
+                                    case ("big_letters"):
+                                        password += GeneratorBigSymbol();
+                                        count_letter++;
+                                        break;
+                                }
+                            }
+                            else password += GeneratorSpecialSymbol();
+                            break;
                     }
                 }
-                while (min_letter > count_letter || min_num > count_num);
                 Console.WriteLine(password);
             }
-            catch (Exception)
+            catch
             {
                 Console.WriteLine("Error");
             }
         }
-
         static string GeneratorNumber() //Генератор цифр
         {
             string value = rand.Next(0, 10).ToString();
