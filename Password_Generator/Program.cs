@@ -91,7 +91,7 @@ namespace Password_Generator
                     switch (type_list[randomtype])
                     {
                         case ("numbers"):
-                            if (count_letter < min_letter && length - i <= min_letter)
+                            if (count_letter < min_letter && length - i <= min_letter - count_letter)
                             {
                                 int randomtypeletter = rand.Next(type_letter.Count);
                                 switch (type_letter[randomtypeletter])
@@ -111,7 +111,7 @@ namespace Password_Generator
                             break;
 
                         case ("small_letters"):
-                            if (count_num < min_num && length - i <= min_num)
+                            if (count_num < min_num && length - i <= min_num - count_num)
                             {
                                 password += GeneratorNumber();
                                 count_num++;
@@ -124,7 +124,7 @@ namespace Password_Generator
                             break;
 
                         case ("big_letters"):
-                            if (count_num < min_num && length - i <= min_num)
+                            if (count_num < min_num && length - i <= min_num - count_num)
                             {
                                 password += GeneratorNumber();
                                 count_num++;
@@ -136,12 +136,12 @@ namespace Password_Generator
                             }
                             break;
                         case ("special_symbols"):
-                            if (count_num < min_num && length - i <= min_num)
+                            if (count_num < min_num && length - i <= min_num - count_num)
                             {
                                 password += GeneratorNumber();
                                 count_num++;
                             }
-                            if (count_letter < min_letter && length - i <= min_letter)
+                            if (count_letter < min_letter && length - i <= min_letter - count_letter)
                             {
                                 int randomtypeletter = rand.Next(type_letter.Count);
                                 switch (type_letter[randomtypeletter])
