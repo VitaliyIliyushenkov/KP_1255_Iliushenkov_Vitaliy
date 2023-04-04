@@ -12,19 +12,36 @@ namespace Password_Generator
     internal class Program
     {
         static Random rand = new Random();
+        enum Type:int
+        {
+            Integer,
+            Small_Letter,
+            Big_Letter,
+            Special_Symbol
+        }
+
+        int length;
+        int min_num;
+        int min_letter;
+        int count_num;
+        int count_letter;
+
+        List<int> type_list;
+        List<int> type_letter;
+
         static void Main(string[] args)
         {
             //Параметры по умолчанию
             string password = "";
 
-            int length = 16;
-            int min_num = 0;
-            int min_letter = 0;
-            int count_num = 0;
-            int count_letter = 0;
+            length = 16;
+            min_num = 0;
+            min_letter = 0;
+            count_num = 0;
+            count_letter = 0;
 
-            List<string> type_list = new List<string>() { "numbers", "small_letters" };
-            List<string> type_letter = new List<string>() { "small_letters" };
+            type_list = new List<int>() { (int)Type.Integer, (int)Type.Small_Letter};
+            type_letter = new List<int>() { (int)Type.Small_Letter };
 
 
             //Конфигурация
@@ -53,12 +70,12 @@ namespace Password_Generator
                             }
                             if (args[i] == "--uppercase")
                             {
-                                type_list.Add("big_letters");
-                                type_letter.Add("big_letters");
+                                type_list.Add((int)Type.Big_Letter);
+                                type_letter.Add((int)Type.Big_Letter);
                             }
 
                             if (args[i] == "--special")
-                                type_list.Add("special_symbols");
+                                type_list.Add((int)Type.Special_Symbol);
                         }
                         else
                         {
@@ -66,16 +83,17 @@ namespace Password_Generator
                             {
                                 if (args[i][j] == 'u')
                                 {
-                                    type_list.Add("big_letters");
-                                    type_letter.Add("big_letters");
+                                    type_list.Add((int)Type.Big_Letter);
+                                    type_letter.Add((int)Type.Big_Letter);
                                 }
-                                else if (args[i][j] == 's') type_list.Add("special_symbols");
+                                else if (args[i][j] == 's') type_list.Add((int)Type.Special_Symbol);
                                 else throw new Exception();
                             }
                         }
                     }
                     else length = int.Parse(args[0]);
                 }
+
                 //Проверка
                 if (min_num > length)
                     length = min_num;
@@ -90,17 +108,17 @@ namespace Password_Generator
                     int randomtype = rand.Next(type_list.Count);
                     switch (type_list[randomtype])
                     {
-                        case ("numbers"):
+                        case ((int)Type.Integer):
                             if (count_letter < min_letter && length - i <= min_letter - count_letter)
                             {
                                 int randomtypeletter = rand.Next(type_letter.Count);
                                 switch (type_letter[randomtypeletter])
                                 {
-                                    case ("small_letters"):
+                                    case ((int)Type.Small_Letter):
                                         password += GeneratorSmallSymbol();
                                         count_letter++;
                                         break;
-                                    case ("big_letters"):
+                                    case ((int)Type.Big_Letter):
                                         password += GeneratorBigSymbol();
                                         count_letter++;
                                         break;
@@ -110,7 +128,7 @@ namespace Password_Generator
                             count_num++;
                             break;
 
-                        case ("small_letters"):
+                        case ((int)Type.Small_Letter):
                             if (count_num < min_num && length - i <= min_num - count_num)
                             {
                                 password += GeneratorNumber();
@@ -123,7 +141,7 @@ namespace Password_Generator
                             }
                             break;
 
-                        case ("big_letters"):
+                        case ((int)Type.Big_Letter):
                             if (count_num < min_num && length - i <= min_num - count_num)
                             {
                                 password += GeneratorNumber();
@@ -135,7 +153,7 @@ namespace Password_Generator
                                 count_letter++;
                             }
                             break;
-                        case ("special_symbols"):
+                        case ((int)Type.Special_Symbol):
                             if (count_num < min_num && length - i <= min_num - count_num)
                             {
                                 password += GeneratorNumber();
@@ -146,11 +164,11 @@ namespace Password_Generator
                                 int randomtypeletter = rand.Next(type_letter.Count);
                                 switch (type_letter[randomtypeletter])
                                 {
-                                    case ("small_letters"):
+                                    case ((int)Type.Small_Letter):
                                         password += GeneratorSmallSymbol();
                                         count_letter++;
                                         break;
-                                    case ("big_letters"):
+                                    case ((int)Type.Big_Letter):
                                         password += GeneratorBigSymbol();
                                         count_letter++;
                                         break;
