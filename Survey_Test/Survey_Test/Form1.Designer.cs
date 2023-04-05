@@ -60,7 +60,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.Save_file_btn = new System.Windows.Forms.Button();
             this.Download_button = new System.Windows.Forms.Button();
-            this.Add_new_file = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.age_up_down)).BeginInit();
             this.answer1_box.SuspendLayout();
             this.answer2_box.SuspendLayout();
@@ -383,22 +382,11 @@
             this.Download_button.UseVisualStyleBackColor = true;
             this.Download_button.Click += new System.EventHandler(this.Download_button_Click);
             // 
-            // Add_new_file
-            // 
-            this.Add_new_file.Location = new System.Drawing.Point(414, 429);
-            this.Add_new_file.Name = "Add_new_file";
-            this.Add_new_file.Size = new System.Drawing.Size(114, 23);
-            this.Add_new_file.TabIndex = 25;
-            this.Add_new_file.Text = "Add Test";
-            this.Add_new_file.UseVisualStyleBackColor = true;
-            this.Add_new_file.Click += new System.EventHandler(this.Add_new_file_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(782, 553);
-            this.Controls.Add(this.Add_new_file);
             this.Controls.Add(this.Download_button);
             this.Controls.Add(this.Save_file_btn);
             this.Controls.Add(this.listBoxAnswers);
@@ -458,7 +446,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button Save_file_btn;
         private System.Windows.Forms.Button Download_button;
-        private System.Windows.Forms.Button Add_new_file;
     }
 }
 

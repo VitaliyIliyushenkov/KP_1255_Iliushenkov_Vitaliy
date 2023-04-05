@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -42,6 +42,7 @@ namespace Survey_Test
             answer4_dom_up_down.Items.AddRange(new string[]
                 {"Времени","Свободы","Уважения","Заботы"});
         }
+
         void FillForm(TestResult result)
         {
             ClearForm();
@@ -162,11 +163,6 @@ namespace Survey_Test
                 results.Add(newResult);
                 UpdateResultsList();
             }
-        }
-
-        private void Add_new_file_Click(object sender, EventArgs e)
-        {
-            ClearForm();
         }
 
         private void Save_btn_Click(object sender, EventArgs e)
