@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -20,14 +20,14 @@ namespace Password_Generator
             Special_Symbol
         }
 
-        int length;
-        int min_num;
-        int min_letter;
-        int count_num;
-        int count_letter;
+        static int length;
+        static int min_num;
+        static int min_letter;
+        static int count_num;
+        static int count_letter;
 
-        List<int> type_list;
-        List<int> type_letter;
+        static List<int> type_list;
+        static List<int> type_letter;
 
         static void Main(string[] args)
         {
@@ -106,10 +106,11 @@ namespace Password_Generator
                 for (int i = 0; i < length; i++)
                 {
                     int randomtype = rand.Next(type_list.Count);
+
                     switch (type_list[randomtype])
                     {
                         case ((int)Type.Integer):
-                            if (count_letter < min_letter && length - i <= min_letter - count_letter)
+                            if (count_letter < min_letter && length - i == min_letter - count_letter)
                             {
                                 int randomtypeletter = rand.Next(type_letter.Count);
                                 switch (type_letter[randomtypeletter])
@@ -124,12 +125,15 @@ namespace Password_Generator
                                         break;
                                 }
                             }
-                            else password += GeneratorNumber();
-                            count_num++;
+                            else
+                            {
+                                password += GeneratorNumber();
+                                count_num++;
+                            }
                             break;
 
                         case ((int)Type.Small_Letter):
-                            if (count_num < min_num && length - i <= min_num - count_num)
+                            if (count_num < min_num && length - i == min_num - count_num)
                             {
                                 password += GeneratorNumber();
                                 count_num++;
@@ -142,7 +146,7 @@ namespace Password_Generator
                             break;
 
                         case ((int)Type.Big_Letter):
-                            if (count_num < min_num && length - i <= min_num - count_num)
+                            if (count_num < min_num && length - i == min_num - count_num)
                             {
                                 password += GeneratorNumber();
                                 count_num++;
@@ -154,12 +158,12 @@ namespace Password_Generator
                             }
                             break;
                         case ((int)Type.Special_Symbol):
-                            if (count_num < min_num && length - i <= min_num - count_num)
+                            if (count_num < min_num && length - i == min_num - count_num)
                             {
                                 password += GeneratorNumber();
                                 count_num++;
                             }
-                            if (count_letter < min_letter && length - i <= min_letter - count_letter)
+                            else if (count_letter < min_letter && length - i == min_letter - count_letter)
                             {
                                 int randomtypeletter = rand.Next(type_letter.Count);
                                 switch (type_letter[randomtypeletter])
