@@ -9,12 +9,13 @@ namespace Application_User
 {
     internal class PasswordGenerator
     {
+        public string path_program = $@"{Environment.CurrentDirectory}\\Password_Generator\bin\Debug\Password_Generator.exe";
         public string RunApp(string path, string arg)
         {
             // Создание объекта для запуска внешнего приложения
             Process process = new Process();
 
-            process.StartInfo.FileName = path;                  // указание пути к файлу запускаемой программы
+            process.StartInfo.FileName = path_program;                  // указание пути к файлу запускаемой программы
             process.StartInfo.Arguments = arg;                // передача аргументов запускаемой программы
             process.StartInfo.UseShellExecute = false;          // false требуется, чтобы можно было читать из вывода запущенного приложения
             process.StartInfo.RedirectStandardOutput = true;    // true требуется, чтобы можно было читать из стандартного вывода запущенного приложения
