@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -42,9 +42,9 @@ namespace Survey_Test
             answer4_dom_up_down.Items.AddRange(new string[]
                 {"Времени","Свободы","Уважения","Заботы"});
         }
-
         void FillForm(TestResult result)
         {
+            Acces(false);
             ClearForm();
             name_box.Text = result.name;
             surname_box.Text = result.surname;
@@ -65,6 +65,127 @@ namespace Survey_Test
             answer4_dom_up_down.Text = result.answer4;
             answer5_rich_box.Text = result.answer5;
 
+        }
+        void Acces(bool Sw)
+        {
+            name_box.Enabled = Sw;
+            surname_box.Enabled = Sw;
+            age_up_down.Enabled = Sw;
+            group_combo_box.Enabled = Sw;
+            answer1_box.Enabled = Sw;
+            answer2_box.Enabled = Sw;
+            answer3_combo_box.Enabled = Sw;
+            answer4_dom_up_down.Enabled = Sw;
+            answer5_rich_box.Enabled = Sw;
+            Save_btn.Enabled = Sw;
+            buttonClearForm.Enabled = Sw;
+        }
+        private void Clear_Color()
+        {
+            name_box.BackColor = Color.Empty;
+            surname_box.BackColor = Color.Empty;
+            age_up_down.BackColor = Color.Empty;
+            group_combo_box.BackColor = Color.Empty;
+            answer1_box.BackColor = Color.White;
+            answer2_box.BackColor = Color.White;
+            answer3_combo_box.BackColor = Color.Empty;
+            answer4_dom_up_down.BackColor = Color.Empty;
+            answer5_rich_box.BackColor = Color.Empty;
+        }
+        private bool Debag()
+        {
+            int mis = 0;
+
+            if (name_box.Text == "")
+            {
+                name_box.BackColor = Color.IndianRed;
+                mis++;
+            }
+            else
+                name_box.BackColor = Color.LightGreen;
+            if (listBoxAnswers.Items.Contains(name_box.Text))
+            {
+                name_box.BackColor = Color.IndianRed;
+                Error = "Пользователь с таким именем уже есть";
+                mis++;
+            }
+            if (surname_box.Text == "")
+            {
+                surname_box.BackColor = Color.IndianRed;
+                mis++;
+            }
+            else
+                surname_box.BackColor = Color.LightGreen;
+            if (age_up_down.Text == "")
+            {
+                age_up_down.BackColor = Color.IndianRed;
+                mis++;
+            }
+            else
+                age_up_down.BackColor = Color.LightGreen;
+            if (group_combo_box.Text == "")
+            {
+                group_combo_box.BackColor = Color.IndianRed;
+                mis++;
+            }
+            else
+                group_combo_box.BackColor = Color.LightGreen;
+
+            bool i = false;
+            foreach (RadioButton rb in answer1_box.Controls)
+            {
+                if (rb.Checked)
+                {
+                    answer1_box.BackColor = Color.LightGreen;
+                    i = true;
+                }
+
+            }
+            if (i == false)
+            {
+                answer1_box.BackColor = Color.IndianRed;
+                mis++;
+            }
+
+            i = false;
+            foreach (CheckBox cb in answer2_box.Controls)
+            {
+                if (cb.Checked)
+                {
+                    answer2_box.BackColor = Color.LightGreen;
+                    i = true;
+                }
+            }
+            if (i == false)
+            {
+                answer2_box.BackColor = Color.IndianRed;
+                mis++;
+            }
+            if (answer3_combo_box.Text == "")
+            {
+                answer3_combo_box.BackColor = Color.IndianRed;
+                mis++;
+            }
+            else
+                answer3_combo_box.BackColor = Color.LightGreen;
+            if (answer4_dom_up_down.Text == "")
+            {
+                answer4_dom_up_down.BackColor = Color.IndianRed;
+                mis++;
+            }
+            else
+                answer4_dom_up_down.BackColor = Color.LightGreen;
+            if (answer5_rich_box.Text == "")
+            {
+                answer5_rich_box.BackColor = Color.IndianRed;
+                mis++;
+            }
+            else
+                answer5_rich_box.BackColor = Color.LightGreen;
+
+
+            if (mis == 0) return true;
+            else return false;
         }
 
         void ClearForm()
@@ -154,22 +275,43 @@ namespace Survey_Test
             {
                 path = od.FileName;
             }
-            
 
-            for (int i = 0; i < File.ReadAllLines(path).Length; i++)
+            if (File.Exists(path))
             {
-                TestResult newResult = new TestResult();
-                newResult.Deserialize(path, File.ReadAllLines(path)[i]);
-                results.Add(newResult);
-                UpdateResultsList();
+                for (int i = 0; i < File.ReadAllLines(path).Length; i++)
+                {
+                    TestResult newResult = new TestResult();
+                    newResult.Deserialize(path, File.ReadAllLines(path)[i]);
+                    results.Add(newResult);
+                    UpdateResultsList();
+                }
             }
+        }
+
+        private void Add_new_file_Click(object sender, EventArgs e)
+        {
+            Acces(true);
+            ClearForm();
         }
 
         private void Save_btn_Click(object sender, EventArgs e)
         {
-            CreateResult();
-            UpdateResultsList();
-            ClearForm();
+            Error = "Заполните все поля";
+            {
+                if (Debag() == false)
+                {
+                    _ = MessageBox.Show(Error, "Предупреждение",
+                     MessageBoxButtons.OK,
+                     MessageBoxIcon.Exclamation);
+                }
+                else
+                {
+                    CreateResult();
+                    UpdateResultsList();
+                    ClearForm();
+                }
+                Clear_Color();
+            }
         }
 
         private void Save_file_btn_Click(object sender, EventArgs e)
@@ -179,11 +321,14 @@ namespace Survey_Test
             {
                 path = od.FileName;
             }
-            File.WriteAllText(path, "");
-            for (int index = 0; index < results.Count; index++)
+            if (File.Exists(path))
             {
-                TestResult saveResult = results[index];
-                saveResult.Serialize(path);
+                File.WriteAllText(path, "");
+                for (int index = 0; index < results.Count; index++)
+                {
+                    TestResult saveResult = results[index];
+                    saveResult.Serialize(path);
+                }
             }
         }
     }
