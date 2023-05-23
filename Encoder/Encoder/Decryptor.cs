@@ -14,15 +14,18 @@ namespace Encoder
             string textDecrypt = "";
 
             // Логика расшифровки
+
+            int i = container.decryptors.Count -1;
             foreach (char symbol in textToDecrypt)
             {
                 char newSymbol = symbol;
+                newSymbol = container.decryptors[i].Process(newSymbol);
 
-                foreach (DecryptProcessor decryptor in container.decryptors)
-                {
-                    newSymbol = decryptor.Process(newSymbol);
-                }
                 textDecrypt += newSymbol;
+                if (i == 0)
+                    i = container.decryptors.Count - 1;
+                else
+                    i--;
             }
             return textDecrypt;
         }

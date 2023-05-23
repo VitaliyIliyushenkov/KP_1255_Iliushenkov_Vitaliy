@@ -98,14 +98,18 @@ namespace Encoder
             textbox_encrypted.Clear();
             textbox_key.Clear();
 
+            int i = 0;
             foreach (char symbol in textbox_your_text.Text)
             {
                 char newSymbol = symbol;
-                foreach (Encryptor ecryptor in ecryptorsList)
-                {
-                    newSymbol = ecryptor.encrypt(newSymbol);
-                }
+                newSymbol = ecryptorsList[i].encrypt(newSymbol);
                 textbox_encrypted.Text += newSymbol;
+
+                if (i == ecryptorsList.Count-1)
+                    i = 0;
+                else
+                    i++;
+                
             }
 
             foreach (Encryptor ecryptor in ecryptorsList)
@@ -126,10 +130,12 @@ namespace Encoder
         {
             if (index_selected != null && index_selected != 0)
             {
-                Object temp;
+                object temp;
                 temp = listBox_added_encoders.Items[(int)index_selected];
                 listBox_added_encoders.Items[(int)index_selected] = listBox_added_encoders.Items[(int)index_selected - 1];
                 listBox_added_encoders.Items[(int)index_selected - 1] = temp;
+                index_selected -= 1;
+
             }
         }
 
@@ -137,10 +143,12 @@ namespace Encoder
         {
             if (index_selected != null && index_selected != listBox_added_encoders.Items.Count-1)
             {
-                Object temp;
+                object temp;
                 temp = listBox_added_encoders.Items[(int)index_selected];
                 listBox_added_encoders.Items[(int)index_selected] = listBox_added_encoders.Items[(int)index_selected + 1];
                 listBox_added_encoders.Items[(int)index_selected + 1] = temp;
+                index_selected += 1;
+
             }
         }
     }
