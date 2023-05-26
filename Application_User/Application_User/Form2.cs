@@ -29,9 +29,11 @@ namespace Application_User
         {
             InitializeComponent();
             UpdateResultsList();
-            if (Program.user_key == (int)Program.Permissions.CommonUser)
+            Console.WriteLine(Program.user_key);
+            if (Program.user_key == (int)Flags.Permissions.CommonUser)
             {
                 save_btn.Enabled = false;
+                btn_add_user.Enabled = false;
                 password_group_Box.Enabled = false;
                 name_Box.Enabled = false;
                 surname_Box.Enabled = false;
@@ -84,13 +86,14 @@ namespace Application_User
                 LOGIN = login_Box.Text,
                 PASSWORD = password_Box.Text,
                 BIRTHDAY = dateTimePicker.Value,
+                USERTYPE = (int)Flagss.Permissions.CommonUser
             };
             return newResult;
         }
         void UpdateResultsList() //Просмотр пользователей
         {
             listBox.Items.Clear();
-            if (Program.user_key != (int)Program.Permissions.Guest)
+            if (Program.user_key != (int)Flags.Permissions.Guest)
             {
                 foreach (Account result in Program.results)
                 {
@@ -101,7 +104,7 @@ namespace Application_User
             {
                 foreach (Account result in Program.results)
                 {
-                    if (result.usertype == (int)Program.Permissions.CommonUser)
+                    if (result.usertype == (int)Flags.Permissions.CommonUser)
                     {
                         listBox.Items.Add(result.name);
                     }
@@ -117,30 +120,23 @@ namespace Application_User
             surname_Box.Text = result.surname;
             login_Box.Text = result.login;
             password_Box.Text = result.password;
+            dateTimePicker.Value = result.birthday;
             if (!isMe)
             {
-                if (Program.user_key == (int)Program.Permissions.Guest)
+                if (listBox.Items[index_selected].ToString() == "Закрыт")
+                {
+                    name_Box.Text = "Закрыт";
+                    surname_Box.Text = "";
+                }
+                if (Program.user_key == (int)Flags.Permissions.Guest)
                     login_Box.Text = "*****";
-                if (Program.user_key == (int)Program.Permissions.Guest
-                    || Program.user_key == (int)Program.Permissions.CommonUser)
+                if (Program.user_key == (int)Flags.Permissions.Guest
+                    || Program.user_key == (int)Flags.Permissions.CommonUser)
                     password_Box.Text = "*****";
             }
-            dateTimePicker.Value = result.birthday;
 
-            if (Program.user_key != (int)Program.Permissions.Admin && !isMe)
-            {
-                if(Program.user_key != (int)Program.Permissions.Guest)
-                {
-                    save_btn.Enabled = false;
-                }
-                password_group_Box.Enabled = false;
-                name_Box.Enabled = false;
-                surname_Box.Enabled = false;
-                login_Box.Enabled = false;
-                password_Box.Enabled = false;
-                dateTimePicker.Enabled = false;
-            }
-            else
+            if ((Program.user_key == (int)Flags.Permissions.Admin)
+                || (Program.user_key == (int)Flags.Permissions.CommonUser && isMe))
             {
                 save_btn.Enabled = true;
                 password_group_Box.Enabled = true;
@@ -150,13 +146,25 @@ namespace Application_User
                 password_Box.Enabled = true;
                 dateTimePicker.Enabled = true;
             }
+            else
+            {
+                save_btn.Enabled = false;
+                password_group_Box.Enabled = false;
+                name_Box.Enabled = false;
+                surname_Box.Enabled = false;
+                login_Box.Enabled = false;
+                password_Box.Enabled = false;
+                dateTimePicker.Enabled = false;
+            }
+
         }
 
         private void Save_btn_Click(object sender, EventArgs e)
         {
-            if (isSelected && (Program.user_key == (int)Program.Permissions.Admin && isMe))
+            if (isSelected && (Program.user_key == (int)Flags.Permissions.Admin || isMe))
             {
                 Program.results[index_selected].NAME = name_Box.Text;
+                Program.user_name = name_Box.Text;
                 Program.results[index_selected].SURNAME = surname_Box.Text;
                 Program.results[index_selected].LOGIN = login_Box.Text;
                 Program.results[index_selected].PASSWORD = password_Box.Text;
@@ -164,16 +172,16 @@ namespace Application_User
                 isSelected = false;
                 delete_btn.Visible = false;
             }
-            else if (Program.user_key == (int)Program.Permissions.Admin || Program.user_key == (int)Program.Permissions.Guest)
+            else if (Program.user_key == (int)Flags.Permissions.Guest)
             {
-                if (!isMe)
-                {
-                    CreateResult().USERTYPE = (int)Program.Permissions.CommonUser;
-                }
+                Program.user_key = (int)Flags.Permissions.CommonUser;
                 Program.results.Add(CreateResult());
-                if(Program.user_key == (int)Program.Permissions.Guest)
-                    Program.user_key = (int)Program.Permissions.CommonUser;
             }
+            else if (Program.user_key == (int)Flags.Permissions.Admin)
+            {
+                Program.results.Add(CreateResult());
+            }
+
             Save_file();
             UpdateResultsList();
             ClearForm();
@@ -213,17 +221,22 @@ namespace Application_User
             index_selected = listBox.SelectedIndex;
 
             if (listBox.Items[index_selected].ToString() == Program.user_name)
+            {
+                Console.WriteLine("Это я");
                 isMe = true;
+            }
             else isMe = false;
 
             if (listBox.Items[index_selected].ToString() != "Закрыт")
             {
                 isSelected = true;
-                if (Program.user_key == (int)Program.Permissions.Admin)
+                if (Program.user_key == (int)Flags.Permissions.Admin)
                 delete_btn.Visible = true;
             }
+            else isSelected = false;
             Account foundResult = Program.results[index_selected];
-                FillForm(foundResult);
+            FillForm(foundResult);
+
         }
 
         private void delete_btn_Click(object sender, EventArgs e)
@@ -236,6 +249,14 @@ namespace Application_User
             UpdateResultsList();
             ClearForm();
             Save_file();
+        }
+
+        private void btn_add_user_Click(object sender, EventArgs e)
+        {
+            ClearForm();
+            isSelected = false;
+            isMe = false;
+
         }
     }
 }

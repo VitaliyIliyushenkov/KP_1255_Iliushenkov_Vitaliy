@@ -36,6 +36,12 @@ namespace Application_User
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            if (!File.Exists(Program.path_date))
+                File.Create(Program.path_date).Close();
+
+            if (!File.Exists(Program.path_password))
+                File.Create(Program.path_password).Close();
+
             json_strings = File.ReadAllLines(Program.path_date);
             passwords = File.ReadAllLines(Program.path_password);
             for(int i = 0; i < json_strings.Length; i++)
@@ -54,7 +60,15 @@ namespace Application_User
                     if (passwords[i] == password_box.Text) 
                     {
                         Program.user_name = Program.results[i].NAME;
-                        Program.user_key = Program.results[i].usertype;
+                        switch(Program.results[i].usertype)
+                        {
+                            case (31):
+                                Program.user_key = (int)Program.Permissions.Admin;
+                                break;
+                            case (3):
+                                Program.user_key = (int)Program.Permissions.CommonUser;
+                                break;
+                        }
                         Form2 newForm = new Form2();
                         newForm.Show();
                         Hide();

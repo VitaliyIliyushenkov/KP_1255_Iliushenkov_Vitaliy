@@ -51,6 +51,7 @@
             this.save_btn = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.delete_btn = new System.Windows.Forms.Button();
+            this.btn_add_user = new System.Windows.Forms.Button();
             this.password_group_Box.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.number_numericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.letters_numericUpDown)).BeginInit();
@@ -276,6 +277,18 @@
             this.delete_btn.Visible = false;
             this.delete_btn.Click += new System.EventHandler(this.delete_btn_Click);
             // 
+            // btn_add_user
+            // 
+            this.btn_add_user.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_add_user.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
+            this.btn_add_user.Location = new System.Drawing.Point(632, 428);
+            this.btn_add_user.Name = "btn_add_user";
+            this.btn_add_user.Size = new System.Drawing.Size(45, 45);
+            this.btn_add_user.TabIndex = 13;
+            this.btn_add_user.Text = "+";
+            this.btn_add_user.UseVisualStyleBackColor = true;
+            this.btn_add_user.Click += new System.EventHandler(this.btn_add_user_Click);
+            // 
             // Form2
             // 
             this.AccessibleDescription = "";
@@ -283,6 +296,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(751, 485);
+            this.Controls.Add(this.btn_add_user);
             this.Controls.Add(this.delete_btn);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.save_btn);
@@ -333,6 +347,7 @@
         private System.Windows.Forms.Button save_btn;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button delete_btn;
+        private System.Windows.Forms.Button btn_add_user;
     }
 }
 
