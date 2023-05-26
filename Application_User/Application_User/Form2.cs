@@ -86,7 +86,7 @@ namespace Application_User
                 LOGIN = login_Box.Text,
                 PASSWORD = password_Box.Text,
                 BIRTHDAY = dateTimePicker.Value,
-                USERTYPE = (int)Flagss.Permissions.CommonUser
+                USERTYPE = (int)Flags.Permissions.CommonUser
             };
             return newResult;
         }

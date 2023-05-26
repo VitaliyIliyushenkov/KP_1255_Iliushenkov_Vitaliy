@@ -28,7 +28,7 @@ namespace Application_User
 
         private void guest_btn_Click(object sender, EventArgs e)
         {
-            Program.user_key = (int)Program.Permissions.Guest;
+            Program.user_key = (int)Flags.Permissions.Guest;
             Form2 newForm = new Form2();
             newForm.Show();
             Hide();
@@ -63,10 +63,10 @@ namespace Application_User
                         switch(Program.results[i].usertype)
                         {
                             case (31):
-                                Program.user_key = (int)Program.Permissions.Admin;
+                                Program.user_key = (int)Flags.Permissions.Admin;
                                 break;
                             case (3):
-                                Program.user_key = (int)Program.Permissions.CommonUser;
+                                Program.user_key = (int)Flags.Permissions.CommonUser;
                                 break;
                         }
                         Form2 newForm = new Form2();
