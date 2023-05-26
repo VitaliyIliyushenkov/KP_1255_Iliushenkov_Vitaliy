@@ -134,7 +134,8 @@ namespace Encoder
                 temp = listBox_added_encoders.Items[(int)index_selected];
                 listBox_added_encoders.Items[(int)index_selected] = listBox_added_encoders.Items[(int)index_selected - 1];
                 listBox_added_encoders.Items[(int)index_selected - 1] = temp;
-                index_selected -= 1;
+                if (index_selected > 0)
+                index_selected --;
 
             }
         }
@@ -147,7 +148,8 @@ namespace Encoder
                 temp = listBox_added_encoders.Items[(int)index_selected];
                 listBox_added_encoders.Items[(int)index_selected] = listBox_added_encoders.Items[(int)index_selected + 1];
                 listBox_added_encoders.Items[(int)index_selected + 1] = temp;
-                index_selected += 1;
+                if (index_selected < listBox_added_encoders.Items.Count-1)
+                index_selected ++;
 
             }
         }
