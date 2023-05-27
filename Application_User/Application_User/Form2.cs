@@ -269,14 +269,6 @@ namespace Application_User
 
             if (login_Box.Text == "")
                 Error = "Заполните все поля";
-            else
-            {
-                foreach (Account result in Program.results)
-                {
-                    if (result.login == login_Box.Text)
-                        Error = "Пользователь с таким логином уже есть";
-                }
-            }
 
             if (surname_Box.Text == "")
                 Error = "Заполните все поля";
