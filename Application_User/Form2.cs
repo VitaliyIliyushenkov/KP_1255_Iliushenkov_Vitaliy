@@ -277,7 +277,7 @@ namespace Application_User
                     if (result.login == login_Box.Text)
                         num_account++;
                 }
-                if (num_account < 1) 
+                if (num_account > 1) 
                     Error = "Пользователь с таким логином уже есть";
             }
 
