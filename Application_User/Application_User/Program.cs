@@ -21,7 +21,7 @@ namespace Application_User
         }
 
         public static int user_key;
-        public static string user_name;
+        public static string user_login;
         public static List<Account> results = new List<Account>();
         public static string path_date = $@"{Environment.CurrentDirectory}\\Data.json";
         public static string path_password = $@"{Environment.CurrentDirectory}\\Password.json";

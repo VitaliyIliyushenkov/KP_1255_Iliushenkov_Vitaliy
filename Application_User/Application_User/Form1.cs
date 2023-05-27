@@ -29,6 +29,7 @@ namespace Application_User
         private void guest_btn_Click(object sender, EventArgs e)
         {
             Program.user_key = (int)Flags.Permissions.Guest;
+
             Form2 newForm = new Form2();
             newForm.Show();
             Hide();
@@ -44,6 +45,7 @@ namespace Application_User
 
             json_strings = File.ReadAllLines(Program.path_date);
             passwords = File.ReadAllLines(Program.path_password);
+
             for(int i = 0; i < json_strings.Length; i++)
             {
                 Program.results.Add(JsonSerializer.Deserialize<Account>(json_strings[i]));
@@ -59,16 +61,9 @@ namespace Application_User
                 {
                     if (passwords[i] == password_box.Text) 
                     {
-                        Program.user_name = Program.results[i].NAME;
-                        switch(Program.results[i].usertype)
-                        {
-                            case (31):
-                                Program.user_key = (int)Flags.Permissions.Admin;
-                                break;
-                            case (3):
-                                Program.user_key = (int)Flags.Permissions.CommonUser;
-                                break;
-                        }
+                        Program.user_login = Program.results[i].LOGIN;
+                        Program.user_key = Program.results[i].USERTYPE;
+
                         Form2 newForm = new Form2();
                         newForm.Show();
                         Hide();

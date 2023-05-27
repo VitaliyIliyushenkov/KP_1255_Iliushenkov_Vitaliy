@@ -18,12 +18,11 @@ namespace Application_User
             EditOther = 8,
             ViewPasswords = 16,
 
-
-            Guest = ViewUsers,//1
-            CommonUser = ViewAdmins | ViewUsers,//3
+            Guest = ViewUsers,  //1
+            CommonUser = ViewAdmins | ViewUsers,    //3
             ExtendedUser = CommonUser | EditSelf,
             Moderator = CommonUser | ViewPasswords,
-            Admin = ExtendedUser | EditOther | ViewPasswords//31
+            Admin = ExtendedUser | EditOther | ViewPasswords    //31
         }
     }
 }
